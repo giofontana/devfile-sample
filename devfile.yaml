@@ -1,33 +1,23 @@
 apiVersion: 1.0.0
 metadata:
-  name: spring-petclinic
+  name: nodejs-sample
 projects:
-  - name: spring-petclinic
+  - name: nodejs-sample
     source:
       type: git
-      location: 'https://github.com/che-samples/web-java-spring-petclinic.git'
+      location: 'https://github.com/che-samples/web-nodejs-sample.git'
 components:
-  - alias: dev
-    type: dockerimage
-    image: registry.devshift.net/che/centos_jdk8
-    mountSources: true
-    endpoints:
-      - name: petclinic-web-server
-        port: 8080
-        attributes:
-          protocol: http
-          secure: 'false'
-          public: 'true'
-          discoverable: 'false'
-    memoryLimit: 2048M
+  - alias: theia-editor
+    type: cheEditor
+    id: org.eclipse.che.editor.theia:latest
 commands:
-  - name: build_&_run
+  - name: start
     actions:
       - type: exec
-        component: dev
-        command: "cd $CHE_PROJECTS_ROOT/spring-petclinic && mvn clean install && cp $CHE_PROJECTS_ROOT/spring-petclinic/target/*.war $TOMCAT_HOME/webapps/ROOT.war && $TOMCAT_HOME/bin/catalina.sh run 2>&1"
-  - name: stop
+        component: theia-editor
+        command: cd ${CHE_PROJECTS_ROOT}/nodejs-sample/app && node app.js
+  - name: test
     actions:
       - type: exec
-        component: dev
-        command: "$TOMCAT_HOME/bin/catalina.sh stop 2>&1"
+        component: theia-editor
+        command: curl localhost:3000
