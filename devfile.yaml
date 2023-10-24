@@ -9,7 +9,7 @@ projects:
 components:
   - alias: theia-editor
     type: cheEditor
-    id: org.eclipse.che.editor.theia:latest
+    id: org.eclipse.che.editor.theia
 commands:
   - name: start
     actions:
